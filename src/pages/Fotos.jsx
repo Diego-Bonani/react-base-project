@@ -1,20 +1,25 @@
-import { useParams } from "react-router-dom";
 import FotoCard from "../components/FotoCard/FotoCard";
 import ListContainer from "../components/ListContainer/ListContainer";
-import dados from "../data/computadores.json";
+import brutos from "../data/computadores.json";
 import Protegida from "./Protegida";
+import { useState } from "react";
 
 const Fotos = () => {
-  const { id } = useParams();
+  const [dados, setDados] = useState(brutos);
 
-  const dadosFiltrados = dados.filter(
-  (ele) => ele.id === parseInt(id) || !id
-  )
+  const filtro = (entrada) => {
+    setDados(brutos.filter(
+            (ele) => ele.nome.includes(entrada) || ele.link_original.includes(entrada)
+          ))
+    }
   
   return (
       <Protegida>
+        <input type="text" 
+          onChange={ (e) => filtro(e.target.value)}
+        />
         <ListContainer>
-          {dadosFiltrados.map(
+          {dados.map(
             (el, index) => (
               <FotoCard 
                 key={index}
